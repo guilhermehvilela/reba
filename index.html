@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário REBA - Avaliação Rápida de Corpo Inteiro</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Formulário REBA</h1>
+            <p>Avaliação Rápida de Corpo Inteiro</p>
+        </header>
+
+        <form id="rebaForm" class="reba-form">
+            <!-- Dados Gerais -->
+            <section class="card form-section">
+                <h2>Dados Gerais</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="funcao">Função *</label>
+                        <input type="text" id="funcao" name="funcao" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="gse">GSE (Grupo Similar de Exposição) *</label>
+                        <input type="text" id="gse" name="gse" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="avaliador">Nome do Avaliador *</label>
+                        <input type="text" id="avaliador" name="avaliador" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="data">Data da Avaliação *</label>
+                        <input type="date" id="data" name="data" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="descricao">Descrição da Tarefa</label>
+                    <textarea id="descricao" name="descricao" class="form-control" rows="3" placeholder="Descreva brevemente a tarefa avaliada..."></textarea>
+                </div>
+            </section>
+
+            <!-- Grupo A -->
+            <section class="card form-section">
+                <h2>Grupo A - Tronco, Pescoço e Pernas</h2>
+                
+                <!-- Pescoço -->
+                <div class="assessment-group">
+                    <h3>Pescoço</h3>
+                    <div class="radio-group">
+                        <label><input type="radio" name="pescoco" value="1" required> 1 - Posição neutra (0-20°)</label>
+                        <label><input type="radio" name="pescoco" value="2"> 2 - Flexão ou extensão >20°</label>
+                    </div>
+                    <div class="checkbox-adjustments">
+                        <label><input type="checkbox" name="pescoco_torcao"> +1 Torção</label>
+                        <label><input type="checkbox" name="pescoco_lateral"> +1 Inclinação lateral</label>
+                    </div>
+                </div>
+
+                <!-- Tronco -->
+                <div class="assessment-group">
+                    <h3>Tronco</h3>
+                    <div class="radio-group">
+                        <label><input type="radio" name="tronco" value="1" required> 1 - Ereto</label>
+                        <label><input type="radio" name="tronco" value="2"> 2 - Flexão 0-20° ou extensão 0-20°</label>
+                        <label><input type="radio" name="tronco" value="3"> 3 - Flexão 20-60° ou extensão >20°</label>
+                        <label><input type="radio" name="tronco" value="4"> 4 - Flexão >60°</label>
+                    </div>
+                    <div class="checkbox-adjustments">
+                        <label><input type="checkbox" name="tronco_torcao"> +1 Torção</label>
+                        <label><input type="checkbox" name="tronco_lateral"> +1 Inclinação lateral</label>
+                    </div>
+                </div>
+
+                <!-- Pernas -->
+                <div class="assessment-group">
+                    <h3>Pernas</h3>
+                    <div class="radio-group">
+                        <label><input type="radio" name="pernas" value="1" required> 1 - Suporte bilateral, peso balanceado, espaço para caminhar</label>
+                        <label><input type="radio" name="pernas" value="2"> 2 - Suporte unilateral, peso desbalanceado</label>
+                        <label><input type="radio" name="pernas" value="3"> 3 - Joelhos flexionados 30-60°</label>
+                        <label><input type="radio" name="pernas" value="4"> 4 - Joelhos flexionados >60°</label>
+                    </div>
+                </div>
+
+                <div class="score-display">
+                    <strong>Score A: <span id="scoreA">-</span></strong>
+                </div>
+            </section>
+
+            <!-- Grupo B -->
+            <section class="card form-section">
+                <h2>Grupo B - Braço, Antebraço e Punho</h2>
+                
+                <!-- Braço Superior -->
+                <div class="assessment-group">
+                    <h3>Braço Superior</h3>
+                    <div class="radio-group">
+                        <label><input type="radio" name="braco" value="1" required> 1 - Extensão 20° a flexão 20°</label>
+                        <label><input type="radio" name="braco" value="2"> 2 - Extensão >20° ou flexão 20-45°</label>
+                        <label><input type="radio" name="braco" value="3"> 3 - Flexão 45-90°</label>
+                        <label><input type="radio" name="braco" value="4"> 4 - Flexão >90°</label>
+                    </div>
+                    <div class="checkbox-adjustments">
+                        <label><input type="checkbox" name="braco_ombro"> +1 Ombro elevado</label>
+                        <label><input type="checkbox" name="braco_abduzido"> +1 Braço abduzido</label>
+                        <label><input type="checkbox" name="braco_apoiado"> -1 Braço apoiado</label>
+                    </div>
+                </div>
+
+                <!-- Antebraço -->
+                <div class="assessment-group">
+                    <h3>Antebraço</h3>
+                    <div class="radio-group">
+                        <label><input type="radio" name="antebraco" value="1" required> 1 - Flexão 60-100°</label>
+                        <label><input type="radio" name="antebraco" value="2"> 2 - Flexão <60° ou >100°</label>
+                    </div>
+                </div>
+
+                <!-- Punho -->
+                <div class="assessment-group">
+                    <h3>Punho</h3>
+                    <div class="radio-group">
+                        <label><input type="radio" name="punho" value="1" required> 1 - Posição neutra</label>
+                        <label><input type="radio" name="punho" value="2"> 2 - Flexão/extensão 0-15°</label>
+                        <label><input type="radio" name="punho" value="3"> 3 - Flexão/extensão >15°</label>
+                    </div>
+                    <div class="checkbox-adjustments">
+                        <label><input type="checkbox" name="punho_torcao"> +1 Torção</label>
+                    </div>
+                </div>
+
+                <div class="score-display">
+                    <strong>Score B: <span id="scoreB">-</span></strong>
+                </div>
+            </section>
+
+            <!-- Fatores Adicionais -->
+            <section class="card form-section">
+                <h2>Fatores Adicionais</h2>
+                
+                <!-- Força/Carga -->
+                <div class="assessment-group">
+                    <h3>Força/Carga</h3>
+                    <div class="radio-group">
+                        <label><input type="radio" name="forca" value="0" required> 0 - <5kg</label>
+                        <label><input type="radio" name="forca" value="1"> 1 - 5-10kg</label>
+                        <label><input type="radio" name="forca" value="2"> 2 - >10kg</label>
+                    </div>
+                    <div class="checkbox-adjustments">
+                        <label><input type="checkbox" name="forca_brusca"> +1 Força aplicada bruscamente</label>
+                    </div>
+                </div>
+
+                <!-- Acoplamento/Pega -->
+                <div class="assessment-group">
+                    <h3>Acoplamento/Pega</h3>
+                    <div class="radio-group">
+                        <label><input type="radio" name="pega" value="0" required> 0 - Boa</label>
+                        <label><input type="radio" name="pega" value="1"> 1 - Aceitável</label>
+                        <label><input type="radio" name="pega" value="2"> 2 - Pobre</label>
+                        <label><input type="radio" name="pega" value="3"> 3 - Inaceitável</label>
+                    </div>
+                </div>
+
+                <!-- Atividade -->
+                <div class="assessment-group">
+                    <h3>Atividade</h3>
+                    <div class="checkbox-adjustments">
+                        <label><input type="checkbox" name="atividade_estatica"> +1 Postura estática >1min</label>
+                        <label><input type="checkbox" name="atividade_repetitiva"> +1 Repetitiva >4x/min</label>
+                        <label><input type="checkbox" name="atividade_instavel"> +1 Mudanças rápidas/instável</label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resultado Final -->
+            <section class="card result-section">
+                <h2>Resultado Final</h2>
+                <div class="result-grid">
+                    <div class="score-item">
+                        <label>Score A Final:</label>
+                        <span id="scoreAFinal">-</span>
+                    </div>
+                    <div class="score-item">
+                        <label>Score B Final:</label>
+                        <span id="scoreBFinal">-</span>
+                    </div>
+                    <div class="score-item">
+                        <label>Score C:</label>
+                        <span id="scoreC">-</span>
+                    </div>
+                    <div class="score-item final-score">
+                        <label>SCORE REBA FINAL:</label>
+                        <span id="scoreFinal">-</span>
+                    </div>
+                </div>
+                <div id="riskInterpretation" class="risk-interpretation">
+                    <p>Preencha todos os campos para ver a interpretação do risco.</p>
+                </div>
+            </section>
+
+            <!-- Botões de Exportação -->
+            <section class="export-section">
+                <button type="button" id="exportExcel" class="btn btn--primary" disabled>
+                    📊 Exportar para Excel
+                </button>
+                <button type="button" id="exportPDF" class="btn btn--secondary" disabled>
+                    📄 Exportar para PDF
+                </button>
+            </section>
+        </form>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
